@@ -7,14 +7,14 @@ import { MaterialModule } from '@angular/material'
 import { FlexLayoutModule } from '@angular/flex-layout'
 import 'hammerjs';
 import { MenuComponent } from './menu/menu.component';
-import { MenuV2Component } from './menu-v2/menu-v2.component'
+import { DishdetailComponent } from './dishdetail/dishdetail.component'
 
 
 @NgModule({
   declarations: [
     AppComponent,
     MenuComponent,
-    MenuV2Component
+    DishdetailComponent
   ],
   imports: [
     BrowserModule,
