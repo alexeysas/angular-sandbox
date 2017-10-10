@@ -10,8 +10,9 @@ import {Feedback, ContactType} from '../shared/feedback'
 export class ContactComponent implements OnInit {
 
   feedbackForm: FormGroup;
-  Feedback: Feedback;
+  feedback: Feedback;
   contactType = ContactType;
+  active = true;
 
   constructor(private fb: FormBuilder) { 
     this.createForm();   
@@ -22,6 +23,20 @@ export class ContactComponent implements OnInit {
   
   createForm() {
     this.feedbackForm = this.fb.group({
+      firstname: ['', Validators.required ],
+      lastname: ['', Validators.required ],
+      telnum: ['0', Validators.required ],
+      email: ['', Validators.required],
+      agree: false,
+      contacttype: 'None',
+      message: ''
+    });
+  }
+
+  onSubmit() {
+    this.feedback = this.feedbackForm.value;
+    console.log(this.feedback);
+    this.feedbackForm.reset({
       firstname: '',
       lastname: '',
       telnum: '0',
@@ -30,6 +45,7 @@ export class ContactComponent implements OnInit {
       contacttype: 'None',
       message: ''
     });
+    this.active = false;
+    setTimeout(() => this.active = true, 0);
   }
-
 }
