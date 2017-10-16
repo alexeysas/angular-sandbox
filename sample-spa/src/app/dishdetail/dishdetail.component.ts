@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Dish } from  '../shared/dish'
+import { Comment } from  '../shared/comment'
 
 import { Params, ActivatedRoute } from '@angular/router'
 import { Location } from '@angular/common'
@@ -14,7 +15,7 @@ import 'rxjs/add/operator/switchMap'
 @Component({
   selector: 'app-dishdetail',
   templateUrl: './dishdetail.component.html',
-  styleUrls: ['./dishdetail.component.css']
+  styleUrls: ['./dishdetail.component.scss']
 })
 export class DishdetailComponent implements OnInit {
 
@@ -30,10 +31,10 @@ export class DishdetailComponent implements OnInit {
   dishIds: number[];
   prev: number;
   next: number;
-  comment: Comment;
   active = true;
   comments: Comment[];
-  
+  wasValid = false;
+
   commentsForm: FormGroup;
 
   formErrors = {
@@ -65,8 +66,7 @@ export class DishdetailComponent implements OnInit {
       .subscribe(dish => { 
         this.dish = dish;
         this.setPrevNext(dish.id);  
-        this.comment = null;
-        this.reset();
+        this.reset();        
       });
   }
 
@@ -103,9 +103,13 @@ export class DishdetailComponent implements OnInit {
       };
 
       if (form.valid) {
-        this.comment = this.commentsForm.value;
-      } else {
-        this.comment = null;
+        let comment: Comment
+        comment = this.commentsForm.value;
+        this.comments = this.dish.comments.concat([comment])        
+        this.wasValid = true;
+      } else if (this.wasValid){
+        this.comments = this.dish.comments.slice();
+        this.wasValid = false;
       }
     }
 
@@ -127,13 +131,20 @@ export class DishdetailComponent implements OnInit {
       comment: '',
       rating: 5
     });
+  
+    this.comments = this.dish.comments.slice();
 
     this.active = false;
     setTimeout(() => this.active = true, 0);  
+
   };
 
   onSubmit() {
-    this.comment = this.commentsForm.value;
+    let comment: Comment
+    comment = this.commentsForm.value;
+    comment.date = new Date().toISOString();
+
+    this.dish.comments.push(comment);
     this.reset();
   };
 }
