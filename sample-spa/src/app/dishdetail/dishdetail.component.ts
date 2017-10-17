@@ -29,12 +29,14 @@ export class DishdetailComponent implements OnInit {
 
   //@Input()
   dish: Dish;
+  dishCopy = null;
   dishIds: number[];
   prev: number;
   next: number;
   active = true;
   comments: Comment[];
   wasValid = false;
+  errMess: string;
 
   commentsForm: FormGroup;
 
@@ -60,15 +62,18 @@ export class DishdetailComponent implements OnInit {
     //let id = +this.route.snapshot.params['id'];
 
     this.dishService.getDishIds()
-      .subscribe(dishIds => this.dishIds = dishIds );
+      .subscribe(dishIds => this.dishIds = dishIds,
+        errmess => this.errMess = <any>errmess  );
 
     this.route.params
       .switchMap((params: Params) => this.dishService.getDish(+params['id']))
       .subscribe(dish => { 
+        this.dishCopy = dish;
         this.dish = dish;
         this.setPrevNext(dish.id);  
         this.reset();        
-      });
+      },
+      errmess => this.errMess = <any>errmess );
   }
 
   createForm() {
@@ -145,7 +150,11 @@ export class DishdetailComponent implements OnInit {
     comment = this.commentsForm.value;
     comment.date = new Date().toISOString();
 
-    this.dish.comments.push(comment);
+    this.dishCopy.comments.push(comment);
+    this.dishCopy.save()
+      .subscribe(dish => this.dish = dish);
+
+    //this.dish.comments.push(comment);
     this.reset();
   };
 }

@@ -21,7 +21,8 @@ export class MenuComponent implements OnInit {
     //  .then(dishes => this.dishes = dishes );
 
     this.dishService.getDishes()
-      .subscribe(dishes => this.dishes = dishes );
+      .subscribe(dishes => this.dishes = dishes,
+        errmess => this.errMess = <any>errmess );
   }
 
   //onSelect(dish: Dish) { 
