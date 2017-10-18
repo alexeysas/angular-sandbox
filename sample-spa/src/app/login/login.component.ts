@@ -12,7 +12,9 @@ export class LoginComponent implements OnInit {
   constructor(private dialogRef: MdDialogRef<LoginComponent>) { }
 
   user = {
-    remember: false
+    remember: false,
+    username: '',
+    password: ''
   };
 
   ngOnInit() {

@@ -10,12 +10,21 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 
 import {MdSliderModule} from '@angular/material';
 
-import 'rxjs/add/operator/switchMap'
+import 'rxjs/add/operator/switchMap';
+
+import { trigger, state, style, animate, transition } from '@angular/animations';
+import { visibility } from '../animations/app.animation';
+import { flyInOut, expand } from '../animations/app.animation'
 
 @Component({
   selector: 'app-dishdetail',
   templateUrl: './dishdetail.component.html',
-  styleUrls: ['./dishdetail.component.scss']
+  styleUrls: ['./dishdetail.component.scss'],
+  animations: [ visibility(), flyInOut(), expand() ],
+  host: {
+    '[@flyInOut]': 'true',
+    'style': 'display: block;'
+  } 
 })
 export class DishdetailComponent implements OnInit {
 
@@ -37,6 +46,7 @@ export class DishdetailComponent implements OnInit {
   comments: Comment[];
   wasValid = false;
   errMess: string;
+  visibility = 'shown';
 
   commentsForm: FormGroup;
 
@@ -66,12 +76,16 @@ export class DishdetailComponent implements OnInit {
         errmess => this.errMess = <any>errmess  );
 
     this.route.params
-      .switchMap((params: Params) => this.dishService.getDish(+params['id']))
+      .switchMap((params: Params) => { 
+        this.visibility = 'hidden';
+        return this.dishService.getDish(+params['id']);
+       })
       .subscribe(dish => { 
         this.dishCopy = dish;
         this.dish = dish;
         this.setPrevNext(dish.id);  
-        this.reset();        
+        this.reset();      
+        this.visibility = 'shown';  
       },
       errmess => this.errMess = <any>errmess );
   }
