@@ -15,13 +15,13 @@
         </md-card-content>
     </md-card>
     <div [hidden]="dish || dishErrMess">
-      <md-spinner></md-spinner>
-      <h4>Loading... Please Wait</h4>
+        <md-spinner></md-spinner>
+        <h4>Loading... Please Wait</h4>
     </div>
     <div *ngIf="dishErrMess">
         <h2>Error</h2>
         <h4>{{ dishErrMess }}</h4>
-      </div>
+    </div>
 
     <md-card *ngIf="promotion" fxFlex [@expand]>
         <md-card-header>
@@ -30,15 +30,19 @@
                 <h3>{{promotion.name | uppercase}}</h3>
             </md-card-title>
         </md-card-header>
-        <img md-card-image src="{{promotion.image}}" alt="{{promotion.name}}">
+        <img md-card-image src="{{BaseURL + promotion.image}}" alt="{{promotion.name}}">
         <md-card-content>
             <p>{{promotion.description}}
             </p>
         </md-card-content>
     </md-card>
-    <div [hidden]="promotion">
-      <md-spinner></md-spinner>
-      <h4>Loading... Please Wait</h4>
+    <div [hidden]="promotion || promotionErrMess">
+        <md-spinner></md-spinner>
+        <h4>Loading... Please Wait</h4>
+    </div>
+    <div *ngIf="promotionErrMess">
+        <h2>Error</h2>
+        <h4>{{ promotionErrMess }}</h4>
     </div>
 
     <md-card *ngIf="leader" fxFlex [@expand]>
@@ -48,7 +52,7 @@
                 <h3>{{leader.name | uppercase}}</h3>
             </md-card-title>
         </md-card-header>
-        <img md-card-image src={{leader.image}} alt={{leader.name}}>
+        <img md-card-image src="{{ BaseURL + leader.image }}" alt="{{leader.name}}">
         <md-card-content>
             <p>
                 {{leader.designation}}
@@ -58,8 +62,12 @@
             </p>
         </md-card-content>
     </md-card>
-    <div [hidden]="leader">
-      <md-spinner></md-spinner>
-      <h4>Loading... Please Wait</h4>
-    </div>    
+    <div [hidden]="leader || leaderErrMess">
+        <md-spinner></md-spinner>
+        <h4>Loading... Please Wait</h4>
+    </div>
+    <div *ngIf="leaderErrMess">
+        <h2>Error</h2>
+        <h4>{{ leaderErrMess }}</h4>
+    </div>
 </div>
